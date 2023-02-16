@@ -6,8 +6,9 @@ import items.Weapon.WeaponType;
 import java.util.Set;
 
 public class Mage extends Hero {
-    public Mage() {
+    public Mage(String name) {
         super(
+                name,
                 Set.of(ArmorType.cloth),
                 Set.of(WeaponType.staff, WeaponType.wand),
                 new HeroAttribute(1, 1, 8),

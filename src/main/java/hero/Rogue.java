@@ -6,8 +6,9 @@ import items.Weapon.WeaponType;
 import java.util.Set;
 
 public class Rogue extends Hero{
-    public Rogue() {
+    public Rogue(String name) {
         super(
+                name,
                 Set.of(ArmorType.leather,ArmorType.mail),
                 Set.of(WeaponType.dagger, WeaponType.sword),
                 new HeroAttribute(2, 6, 1),
