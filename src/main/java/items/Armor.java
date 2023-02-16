@@ -8,6 +8,10 @@ public class Armor extends Item {
     }
     private ArmorType armorType;
 
+    public ArmorType getArmorType() {
+        return armorType;
+    }
+
     private HeroAttribute armorAttribute;
 
     public HeroAttribute getArmorAttribute() {

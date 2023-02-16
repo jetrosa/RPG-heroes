@@ -8,6 +8,14 @@ public abstract class Item {
     private int requiredLevel;
     private final Slot SLOT;
 
+    public int getRequiredLevel() {
+        return requiredLevel;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public Slot getSlot() {
         return SLOT;
     }

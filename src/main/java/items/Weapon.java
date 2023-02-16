@@ -8,6 +8,10 @@ public class Weapon extends Item{
     WeaponType weaponType;
     private int weaponDamage;
 
+    public WeaponType getWeaponType() {
+        return weaponType;
+    }
+
     public int getWeaponDamage() {
         return weaponDamage;
     }

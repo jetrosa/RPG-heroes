@@ -42,11 +42,23 @@ public abstract class Hero {
         this.levelAttributesTotal.addAttributes(LEVEL_UP_ATTRIBUTES);
     }
 
-    public void equip(Weapon weapon){
+    public void equip(Weapon weapon) throws InvalidWeaponException {
+        if(!validWeaponTypes.contains(weapon.getWeaponType()))
+            throw new InvalidWeaponException("Not able to equip weapons of type " + weapon.getWeaponType());
+
+        if(level<weapon.getRequiredLevel())
+            throw new InvalidWeaponException("Unable to equip the weapon. Required level: "+ weapon.getRequiredLevel() + " Hero level: "+ level);
+
         equipment.put(weapon.getSlot(),weapon);
     }
 
-    public void equip(Armor armor){
+    public void equip(Armor armor) throws InvalidArmorException {
+        if(!validArmorTypes.contains(armor.getArmorType()))
+            throw new InvalidArmorException("Not able to equip armor of type " + armor.getArmorType());
+
+        if(level<armor.getRequiredLevel())
+            throw new InvalidArmorException("Unable to equip the armor. Required level: "+ armor.getRequiredLevel() + " Hero level: "+ level);
+
         equipment.put(armor.getSlot(),armor);
     }
 
@@ -82,7 +94,15 @@ public abstract class Hero {
         return total;
     }
 
-    public void display(){
-
+    public String display(){
+        HeroAttribute total = totalAttributes();
+        StringBuilder str = new StringBuilder();
+        str.append("Name: ").append(name).append("\r\n");
+        str.append("Level: ").append(level).append("\r\n");
+        str.append("Total strength: ").append(total.getStrength()).append("\r\n");
+        str.append("Total dexterity: ").append(total.getDexterity()).append("\r\n");
+        str.append("Total intelligence: ").append(total.getIntelligence()).append("\r\n");
+        str.append("Damage: ").append(damage()).append("\r\n");
+        return str.toString();
     }
 }
