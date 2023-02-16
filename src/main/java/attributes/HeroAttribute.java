@@ -1,4 +1,6 @@
-package hero;
+package attributes;
+
+import org.jetbrains.annotations.NotNull;
 
 public class HeroAttribute {
     private int strength;
@@ -9,5 +11,21 @@ public class HeroAttribute {
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+    public int getDexterity() {
+        return dexterity;
+    }
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public void addAttributes(@NotNull HeroAttribute addedAttribute) {
+        this.strength += addedAttribute.strength;
+        this.dexterity += addedAttribute.dexterity;
+        this.intelligence += addedAttribute.intelligence;
     }
 }

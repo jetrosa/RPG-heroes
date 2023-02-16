@@ -8,7 +8,12 @@ public class Weapon extends Item{
     WeaponType weaponType;
     private int weaponDamage;
 
-    public Weapon(WeaponType weaponType, int weaponDamage) {
+    public int getWeaponDamage() {
+        return weaponDamage;
+    }
+
+    public Weapon(WeaponType weaponType, int weaponDamage, int requiredLevel) {
+        super(Slot.weapon, requiredLevel);
         this.weaponType = weaponType;
         this.weaponDamage = weaponDamage;
     }
