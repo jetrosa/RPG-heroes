@@ -2,6 +2,7 @@ package rpgheroes.hero;
 
 import rpgheroes.items.Armor.ArmorType;
 import rpgheroes.items.Weapon.WeaponType;
+
 import java.util.Set;
 
 public class Mage extends Hero {

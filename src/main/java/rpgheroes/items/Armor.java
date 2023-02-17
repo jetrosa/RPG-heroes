@@ -3,9 +3,10 @@ package rpgheroes.items;
 import rpgheroes.hero.HeroAttribute;
 
 public class Armor extends Item {
-    public enum ArmorType{
-        cloth,leather,mail,plate
+    public enum ArmorType {
+        cloth, leather, mail, plate
     }
+
     private final ArmorType armorType;
 
     public ArmorType getArmorType() {

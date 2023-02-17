@@ -1,10 +1,11 @@
 package rpgheroes.items;
 
-public class Weapon extends Item{
+public class Weapon extends Item {
 
-    public enum WeaponType{
-        axe,bow,dagger,hammer,staff,sword,wand
+    public enum WeaponType {
+        axe, bow, dagger, hammer, staff, sword, wand
     }
+
     WeaponType weaponType;
     private int weaponDamage;
 

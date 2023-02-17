@@ -16,9 +16,11 @@ public class HeroAttribute {
     public int getStrength() {
         return strength;
     }
+
     public int getDexterity() {
         return dexterity;
     }
+
     public int getIntelligence() {
         return intelligence;
     }
@@ -31,8 +33,6 @@ public class HeroAttribute {
 
     @Override
     public boolean equals(Object o) {
-
-        // If the object is compared with itself then return true
         if (o == this) {
             return true;
         }
@@ -43,7 +43,6 @@ public class HeroAttribute {
 
         HeroAttribute oh = (HeroAttribute) o;
 
-        // Compare the data members and return accordingly
         return strength == oh.strength
                 && dexterity == oh.dexterity
                 && intelligence == oh.intelligence;
