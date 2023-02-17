@@ -1,4 +1,4 @@
-package attributes;
+package rpgheroes.hero;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -27,5 +27,25 @@ public class HeroAttribute {
         this.strength += addedAttribute.strength;
         this.dexterity += addedAttribute.dexterity;
         this.intelligence += addedAttribute.intelligence;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof HeroAttribute)) {
+            return false;
+        }
+
+        HeroAttribute oh = (HeroAttribute) o;
+
+        // Compare the data members and return accordingly
+        return strength == oh.strength
+                && dexterity == oh.dexterity
+                && intelligence == oh.intelligence;
     }
 }
