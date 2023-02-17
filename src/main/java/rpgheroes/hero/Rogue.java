@@ -1,14 +1,14 @@
-package hero;
+package rpgheroes.hero;
 
-import attributes.HeroAttribute;
-import items.Armor.ArmorType;
-import items.Weapon.WeaponType;
+import rpgheroes.items.Armor.ArmorType;
+import rpgheroes.items.Weapon.WeaponType;
 import java.util.Set;
 
 public class Rogue extends Hero{
     public Rogue(String name) {
         super(
                 name,
+                "rogue",
                 Set.of(ArmorType.leather,ArmorType.mail),
                 Set.of(WeaponType.dagger, WeaponType.sword),
                 new HeroAttribute(2, 6, 1),
