@@ -1,4 +1,4 @@
-package items;
+package rpgheroes.items;
 
 public class Weapon extends Item{
 
@@ -16,8 +16,8 @@ public class Weapon extends Item{
         return weaponDamage;
     }
 
-    public Weapon(WeaponType weaponType, int weaponDamage, int requiredLevel) {
-        super(Slot.weapon, requiredLevel);
+    public Weapon(String name, WeaponType weaponType, int weaponDamage, int requiredLevel) {
+        super(name, Slot.weapon, requiredLevel);
         this.weaponType = weaponType;
         this.weaponDamage = weaponDamage;
     }

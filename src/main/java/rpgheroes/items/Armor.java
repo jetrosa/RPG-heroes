@@ -1,25 +1,25 @@
-package items;
+package rpgheroes.items;
 
-import attributes.HeroAttribute;
+import rpgheroes.hero.HeroAttribute;
 
 public class Armor extends Item {
     public enum ArmorType{
         cloth,leather,mail,plate
     }
-    private ArmorType armorType;
+    private final ArmorType armorType;
 
     public ArmorType getArmorType() {
         return armorType;
     }
 
-    private HeroAttribute armorAttribute;
+    private final HeroAttribute armorAttribute;
 
     public HeroAttribute getArmorAttribute() {
         return armorAttribute;
     }
 
-    public Armor(Slot slot, ArmorType armorType, HeroAttribute armorAttribute, int requiredLevel) {
-        super(slot, requiredLevel);
+    public Armor(String name, Slot slot, ArmorType armorType, HeroAttribute armorAttribute, int requiredLevel) {
+        super(name, slot, requiredLevel);
         this.armorType = armorType;
         this.armorAttribute = armorAttribute;
     }

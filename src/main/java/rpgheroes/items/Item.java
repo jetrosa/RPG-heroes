@@ -1,6 +1,4 @@
-package items;
-
-import attributes.HeroAttribute;
+package rpgheroes.items;
 
 public abstract class Item {
     public enum Slot{ weapon, head, body, legs }
@@ -20,7 +18,8 @@ public abstract class Item {
         return SLOT;
     }
 
-    public Item(Slot slot, int requiredLevel){
+    public Item(String name, Slot slot, int requiredLevel){
+        this.name = name;
         this.SLOT=slot;
         this.requiredLevel = requiredLevel;
     }
