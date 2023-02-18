@@ -7,13 +7,14 @@ public class Armor extends Item {
         cloth, leather, mail, plate
     }
 
+    //Armor type of the item (specified in the constructor)
     private final ArmorType armorType;
+    //Attributes attached to the armor
+    private final HeroAttribute armorAttribute;
 
     public ArmorType getArmorType() {
         return armorType;
     }
-
-    private final HeroAttribute armorAttribute;
 
     public HeroAttribute getArmorAttribute() {
         return armorAttribute;

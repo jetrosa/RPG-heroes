@@ -1,10 +1,15 @@
 package rpgheroes.items;
 
 public abstract class Item {
+    /**
+     * All available item slots.
+     */
     public enum Slot {weapon, head, body, legs}
 
     private final String name;
+    //Level requirement of the item
     private final int requiredLevel;
+    //Slot where the item can be equipped
     private final Slot SLOT;
 
     public int getRequiredLevel() {

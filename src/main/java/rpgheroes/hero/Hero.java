@@ -9,13 +9,20 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class Hero {
+    //Hero name
     private final String name;
+    //Hero level - starts with level 1
     private int level = 1;
+    //Contains all equipped items and empty item slots.
     private Map<Item.Slot, Item> equipment = new HashMap<>();
+    //Contains all armor types that the hero can use
     private Set<Armor.ArmorType> validArmorTypes;
     private Set<Weapon.WeaponType> validWeaponTypes;
+    //Base and accumulated level attributes
     private HeroAttribute levelAttributesTotal;
+    //Attributes added to the total on each gained level
     private final HeroAttribute LEVEL_UP_ATTRIBUTES;
+    //Hero class name
     private final String heroClass;
 
     public int getLevel() {
@@ -30,10 +37,20 @@ public abstract class Hero {
         return heroClass;
     }
 
+    /**
+     * Returns the class-specific attributes that are added to the total attributes on each level.
+     *
+     * @return LEVEL_UP_ATTRIBUTES
+     */
     public HeroAttribute getLEVEL_UP_ATTRIBUTES() {
         return LEVEL_UP_ATTRIBUTES;
     }
 
+    /**
+     * Returns a map containing all the items equipped by the hero.
+     *
+     * @return equipped items
+     */
     public Map<Item.Slot, Item> getEquipment() {
         return equipment;
     }
@@ -55,11 +72,21 @@ public abstract class Hero {
         }
     }
 
+    /**
+     * Increases the hero level by one and adds level-up attributes to the total.
+     */
     public void levelUp() {
         this.level++;
         this.levelAttributesTotal.addAttributes(LEVEL_UP_ATTRIBUTES);
     }
 
+    /**
+     * Equips a weapon if the level and type requirements are met.
+     * Heroes can only use class-specific item types.
+     *
+     * @param weapon Weapon to be equipped
+     * @throws InvalidWeaponException Level or type requirements are not met
+     */
     public void equip(Weapon weapon) throws InvalidWeaponException {
         if (!validWeaponTypes.contains(weapon.getWeaponType()))
             throw new InvalidWeaponException("Not able to equip weapons of type " + weapon.getWeaponType());
@@ -70,6 +97,13 @@ public abstract class Hero {
         equipment.put(weapon.getSlot(), weapon);
     }
 
+    /**
+     * Equips armor if the level and type requirements are met.
+     * Heroes can only use class-specific item types.
+     *
+     * @param armor Armor to be equipped
+     * @throws InvalidArmorException Level or type requirements are not met
+     */
     public void equip(Armor armor) throws InvalidArmorException {
         if (!validArmorTypes.contains(armor.getArmorType()))
             throw new InvalidArmorException("Not able to equip armor of type " + armor.getArmorType());
@@ -80,6 +114,12 @@ public abstract class Hero {
         equipment.put(armor.getSlot(), armor);
     }
 
+    /**
+     * Calculates the total attributes of the hero including base, accumulated level attributes and
+     * attributes from the equipped items.
+     *
+     * @return Object containing the total attributes
+     */
     public HeroAttribute totalAttributes() {
         HeroAttribute total = new HeroAttribute(
                 levelAttributesTotal.getStrength(),
@@ -94,6 +134,12 @@ public abstract class Hero {
         return total;
     }
 
+    /**
+     * Calculates the hero damage based on total attributes of the hero and weapon damage.
+     * Only the class-specific main attribute is applied to the damage calculation.
+     *
+     * @return calculated damage
+     */
     public double damage() {
         HeroAttribute total = totalAttributes();
         int damagingAttribute;
@@ -101,11 +147,12 @@ public abstract class Hero {
         int levelDex = levelAttributesTotal.getDexterity();
         int levelInt = levelAttributesTotal.getIntelligence();
         int levelStr = levelAttributesTotal.getStrength();
+
+        //Damaging (main) attribute is extracted from the highest level attribute.
         damagingAttribute = levelDex > levelInt ? total.getDexterity() : total.getIntelligence();
         damagingAttribute = levelStr > damagingAttribute ? total.getStrength() : damagingAttribute;
 
-        int weaponlessDamage = 1;
-        int weaponDamage = weaponlessDamage;
+        int weaponDamage = 1; //weaponless damage
         Weapon w = (Weapon) equipment.get(Item.Slot.weapon);
         if (w != null)
             weaponDamage = w.getWeaponDamage();
@@ -113,6 +160,11 @@ public abstract class Hero {
         return weaponDamage * (1 + damagingAttribute / 100.0);
     }
 
+    /**
+     * Displays hero status including: name, class, level, total strength, total dexterity, total intelligence, damage.
+     *
+     * @return String presentation of the hero status
+     */
     public String display() {
         HeroAttribute total = totalAttributes();
         StringBuilder str = new StringBuilder();

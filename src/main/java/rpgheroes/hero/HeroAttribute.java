@@ -25,23 +25,32 @@ public class HeroAttribute {
         return intelligence;
     }
 
+    /**
+     * Adds the attribute values in the parameter object to the attribute values contained in this object.
+     *
+     * @param addedAttribute Object containing the values to be added
+     */
     public void addAttributes(@NotNull HeroAttribute addedAttribute) {
         this.strength += addedAttribute.strength;
         this.dexterity += addedAttribute.dexterity;
         this.intelligence += addedAttribute.intelligence;
     }
 
+    /**
+     * Compares the attribute values (strength, dexterity, intelligence) contained in the class.
+     *
+     * @param o Object to compare
+     * @return boolean match
+     */
     @Override
     public boolean equals(Object o) {
         if (o == this) {
             return true;
         }
 
-        if (!(o instanceof HeroAttribute)) {
+        if (!(o instanceof HeroAttribute oh)) {
             return false;
         }
-
-        HeroAttribute oh = (HeroAttribute) o;
 
         return strength == oh.strength
                 && dexterity == oh.dexterity
