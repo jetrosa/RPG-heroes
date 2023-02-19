@@ -1,4 +1,5 @@
 ### Author: Jetro Saarti
+### Test reports in Actions: https://github.com/jetrosa/RPG-heroes/actions/workflows/ci.yml
 # RPG-heroes
 
 ### Noroff Java assignment
