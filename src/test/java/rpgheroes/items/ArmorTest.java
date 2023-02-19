@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ArmorTest {
 
     @Test
-    void constructor_correctValuesGetters() {
+    void constructor_afterInit_correctValuesGetters() {
         String name = "itemName";
         Item.Slot slot = Item.Slot.body;
         Armor.ArmorType armorType = Armor.ArmorType.cloth;
@@ -16,9 +16,9 @@ class ArmorTest {
         int defaultStrength = 2;
         int defaultDexterity = 2;
         int defaultIntelligence = 2;
+        HeroAttribute attributes = new HeroAttribute(defaultStrength, defaultDexterity, defaultIntelligence);
 
-        HeroAttribute attributes = new HeroAttribute(defaultStrength,defaultDexterity,defaultIntelligence);
-        Armor armor = new Armor(name,slot, armorType, attributes, defaultRequiredLevel);
+        Armor armor = new Armor(name, slot, armorType, attributes, defaultRequiredLevel);
 
         assertEquals(name, armor.getName());
         assertEquals(defaultRequiredLevel, armor.getRequiredLevel());

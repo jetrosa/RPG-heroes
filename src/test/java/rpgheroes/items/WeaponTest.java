@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WeaponTest {
 
     @Test
-    void constructor_correctValuesGetters() {
+    void constructor_afterInit_correctValuesGetters() {
         String name = "itemName";
         Item.Slot defaultSlot = Item.Slot.weapon;
         Weapon.WeaponType weaponType = Weapon.WeaponType.sword;

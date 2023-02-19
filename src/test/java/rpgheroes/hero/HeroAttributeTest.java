@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HeroAttributeTest {
 
     @org.junit.jupiter.api.Test
-    void addAttributes_compareAddedAttributeToNewObject() {
+    void addAttributes_shouldEqualTo_newObjectWithSameValues() {
         int attr1Str = 1;
         int attr1Dex = 2;
         int attr1Int = 3;
@@ -22,7 +22,6 @@ class HeroAttributeTest {
         HeroAttribute attr1 = new HeroAttribute(attr1Str, attr1Dex, attr1Int);
         HeroAttribute attr2 = new HeroAttribute(attr2Str, attr2Dex, attr2Int);
         attr1.addAttributes(attr2);
-
         int actualStr = attr1.getStrength();
         int actualDex = attr1.getDexterity();
         int actualInt = attr1.getIntelligence();
@@ -33,7 +32,7 @@ class HeroAttributeTest {
     }
 
     @org.junit.jupiter.api.Test
-    void addAttributes_compareAddedAttributeToIntPositive() {
+    void addAttributes_shouldAdd_intPositive() {
         int attr1Str = 1;
         int attr1Dex = 2;
         int attr1Int = 3;
@@ -49,7 +48,6 @@ class HeroAttributeTest {
         HeroAttribute attr1 = new HeroAttribute(attr1Str, attr1Dex, attr1Int);
         HeroAttribute attr2 = new HeroAttribute(attr2Str, attr2Dex, attr2Int);
         attr1.addAttributes(attr2);
-
         int actualStr = attr1.getStrength();
         int actualDex = attr1.getDexterity();
         int actualInt = attr1.getIntelligence();
@@ -60,7 +58,7 @@ class HeroAttributeTest {
     }
 
     @org.junit.jupiter.api.Test
-    void addAttributes_compareAddedAttributeToIntZeroAndNegative() {
+    void addAttributes_shouldAdd_intZeroAndNegative() {
         int attr1Str = 1;
         int attr1Dex = 2;
         int attr1Int = -2;
@@ -76,7 +74,6 @@ class HeroAttributeTest {
         HeroAttribute attr1 = new HeroAttribute(attr1Str, attr1Dex, attr1Int);
         HeroAttribute attr2 = new HeroAttribute(attr2Str, attr2Dex, attr2Int);
         attr1.addAttributes(attr2);
-
         int actualStr = attr1.getStrength();
         int actualDex = attr1.getDexterity();
         int actualInt = attr1.getIntelligence();

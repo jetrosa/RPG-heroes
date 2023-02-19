@@ -12,17 +12,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RangerTest {
 
-    private final double delta = 0.01;
-    private Hero hero;
-    private final Armor.ArmorType validArmorType = Armor.ArmorType.mail;
+    //Hero-based variables (different for each Hero subclass)
+    private final Armor.ArmorType validArmorType = Armor.ArmorType.leather;
     private final Armor.ArmorType invalidArmorType = Armor.ArmorType.plate;
     private final Weapon.WeaponType validWeaponType = Weapon.WeaponType.bow;
-    private final Weapon.WeaponType invalidWeaponType = Weapon.WeaponType.sword;
+    private final Weapon.WeaponType invalidWeaponType = Weapon.WeaponType.staff;
     private final HeroAttribute startAttributes = new HeroAttribute(1, 7, 1);
+
+    //Common test variables
+    private final double delta = 0.001;
+    private Hero hero;
     private final HeroAttribute itemAttributes = new HeroAttribute(2, 2, 2);
     private final HeroAttribute itemAttributes2 = new HeroAttribute(3, 3, 3);
-    private final String heroName = "Gandalf";
+    private final String heroName = "TestName";
     private final int startLevel = 1;
+    private final int weaponlessDamage = 1;
     private final int weaponDamage = 2;
     private final Item.Slot bodyArmorSlot = Item.Slot.body;
     private final Item.Slot headArmorSlot = Item.Slot.head;
@@ -91,8 +95,7 @@ class RangerTest {
 
     @Test
     void equip_armor_throws_InvalidArmorExceptionWhenInvalid() {
-        int heroLevel = hero.getLevel();
-        Armor newArmor = new Armor("Item", bodyArmorSlot, invalidArmorType, itemAttributes, heroLevel);
+        Armor newArmor = new Armor("Item", bodyArmorSlot, invalidArmorType, itemAttributes, startLevel);
 
         assertThrows(
                 InvalidArmorException.class,
@@ -103,8 +106,7 @@ class RangerTest {
 
     @Test
     void equip_armor_preventEquipWhenInvalidType() {
-        int heroLevel = hero.getLevel();
-        Armor newArmor = new Armor("Item", bodyArmorSlot, invalidArmorType, itemAttributes, heroLevel);
+        Armor newArmor = new Armor("Item", bodyArmorSlot, invalidArmorType, itemAttributes, startLevel);
         Map<Item.Slot, Item> equipment = hero.getEquipment();
         Item itemBeforeEquip = equipment.get(bodyArmorSlot);
 
@@ -119,8 +121,7 @@ class RangerTest {
 
     @Test
     void equip_armor_throws_InvalidArmorExceptionWhenInvalidLevel() {
-        int heroLevel = hero.getLevel();
-        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, heroLevel + 1);
+        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, startLevel + 1);
 
         assertThrows(
                 InvalidArmorException.class,
@@ -131,8 +132,7 @@ class RangerTest {
 
     @Test
     void equip_armor_preventEquipWhenInvalidLevel() {
-        int heroLevel = hero.getLevel();
-        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, heroLevel + 1);
+        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, startLevel + 1);
         Map<Item.Slot, Item> equipment = hero.getEquipment();
         Item itemBeforeEquip = equipment.get(bodyArmorSlot);
 
@@ -147,8 +147,7 @@ class RangerTest {
 
     @Test
     void equip_weapon_equipWeaponWhenValid() {
-        int heroLevel = hero.getLevel();
-        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, heroLevel);
+        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, startLevel);
         Map<Item.Slot, Item> equipment = hero.getEquipment();
 
         try {
@@ -162,8 +161,7 @@ class RangerTest {
 
     @Test
     void equip_weapon_throws_InvalidWeaponExceptionWhenInvalidType() {
-        int heroLevel = hero.getLevel();
-        Weapon newWeapon = new Weapon("Weapon", invalidWeaponType, weaponDamage, heroLevel);
+        Weapon newWeapon = new Weapon("Weapon", invalidWeaponType, weaponDamage, startLevel);
 
         assertThrows(
                 InvalidWeaponException.class,
@@ -174,8 +172,7 @@ class RangerTest {
 
     @Test
     void equip_weapon_preventsEquipWhenInvalidType() {
-        int heroLevel = hero.getLevel();
-        Weapon newWeapon = new Weapon("Weapon", invalidWeaponType, weaponDamage, heroLevel);
+        Weapon newWeapon = new Weapon("Weapon", invalidWeaponType, weaponDamage, startLevel);
         Map<Item.Slot, Item> equipment = hero.getEquipment();
         Item itemBeforeEquip = equipment.get(weaponSlot);
 
@@ -190,8 +187,7 @@ class RangerTest {
 
     @Test
     void equip_weapon_throws_InvalidWeaponExceptionWhenInvalidLevel() {
-        int heroLevel = hero.getLevel();
-        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, heroLevel + 1);
+        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, startLevel + 1);
 
         assertThrows(
                 InvalidWeaponException.class,
@@ -202,8 +198,7 @@ class RangerTest {
 
     @Test
     void equip_weapon_preventEquipWhenInvalidLevel() {
-        int heroLevel = hero.getLevel();
-        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, heroLevel + 1);
+        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, startLevel + 1);
         Map<Item.Slot, Item> equipment = hero.getEquipment();
         Item itemBeforeEquip = equipment.get(weaponSlot);
 
@@ -217,144 +212,155 @@ class RangerTest {
     }
 
     @Test
-    void totalAttributes_noArmor() {
-        HeroAttribute levelAttr = hero.getLevelAttributesTotal();
+    void totalAttributes_shouldCalculateCorrectly_noArmor() {
         HeroAttribute totalAttr = hero.totalAttributes();
 
-        assertEquals(levelAttr, totalAttr);
+        assertEquals(startAttributes, totalAttr);
     }
 
     @Test
-    void totalAttributes_equippedOneArmor() {
-        int heroLevel = hero.getLevel();
-        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, heroLevel);
+    void totalAttributes_shouldCalculateCorrectly_equippedOneArmor() {
+        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, startLevel);
+
         try {
             hero.equip(newArmor);
         } catch (Exception ignored) {
         }
-        HeroAttribute levelAttr = hero.getLevelAttributesTotal();
         HeroAttribute totalAttr = hero.totalAttributes();
 
-        assertNotEquals(levelAttr, totalAttr);
-        levelAttr.addAttributes(itemAttributes);
-        assertEquals(levelAttr, totalAttr);
+        int expectedStr = startAttributes.getStrength() + itemAttributes.getStrength();
+        int expectedDex = startAttributes.getDexterity() + itemAttributes.getDexterity();
+        int expectedInt = startAttributes.getIntelligence() + itemAttributes.getIntelligence();
+        HeroAttribute expectedAttr = new HeroAttribute(expectedStr, expectedDex, expectedInt);
+
+        assertEquals(expectedAttr, totalAttr);
     }
 
     @Test
-    void totalAttributes_equippedTwoArmor() {
-        int heroLevel = hero.getLevel();
-        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, heroLevel);
+    void totalAttributes_shouldCalculateCorrectly_equippedTwoArmor() {
+        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, startLevel);
+        Armor newArmor2 = new Armor("Item", headArmorSlot, validArmorType, itemAttributes2, startLevel);
 
-        Armor newArmor2 = new Armor("Item", headArmorSlot, validArmorType, itemAttributes2, heroLevel);
-        try {
-            hero.equip(newArmor);
-            hero.equip(newArmor2);
-        } catch (Exception ignored) {
-        }
-        HeroAttribute levelAttr = hero.getLevelAttributesTotal();
-        HeroAttribute totalAttr = hero.totalAttributes();
-
-        levelAttr.addAttributes(itemAttributes);
-        levelAttr.addAttributes(itemAttributes2);
-        assertEquals(levelAttr, totalAttr);
-    }
-
-    @Test
-    void totalAttributes_equippedReplaceArmor() {
-        int heroLevel = hero.getLevel();
-        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, heroLevel);
-
-        Armor newArmor2 = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes2, heroLevel);
         try {
             hero.equip(newArmor);
             hero.equip(newArmor2);
         } catch (Exception ignored) {
         }
-        HeroAttribute levelAttr = hero.getLevelAttributesTotal();
         HeroAttribute totalAttr = hero.totalAttributes();
 
-        levelAttr.addAttributes(itemAttributes2);
-        assertEquals(levelAttr, totalAttr);
+        int expectedStr = startAttributes.getStrength() + itemAttributes.getStrength() + itemAttributes2.getStrength();
+        int expectedDex = startAttributes.getDexterity() + itemAttributes.getDexterity() + itemAttributes2.getStrength();
+        int expectedInt = startAttributes.getIntelligence() + itemAttributes.getIntelligence() + itemAttributes2.getStrength();
+        HeroAttribute expectedAttr = new HeroAttribute(expectedStr, expectedDex, expectedInt);
+
+        assertEquals(expectedAttr, totalAttr);
     }
 
     @Test
-    void damage_weaponless() {
-        int damagingAttribute = hero.getLevelAttributesTotal().getDexterity();
-        int weaponlessDamage = 1;
+    void totalAttributes_shouldCalculateCorrectly_equippedReplaceArmor() {
+        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, startLevel);
+        Armor newArmor2 = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes2, startLevel);
 
-        double expectedDmg = weaponlessDamage * (1 + damagingAttribute / 100.0);
+        try {
+            hero.equip(newArmor);
+            hero.equip(newArmor2);
+        } catch (Exception ignored) {
+        }
+        HeroAttribute totalAttr = hero.totalAttributes();
+
+        int expectedStr = startAttributes.getStrength() + itemAttributes2.getStrength();
+        int expectedDex = startAttributes.getDexterity() + itemAttributes2.getDexterity();
+        int expectedInt = startAttributes.getIntelligence() + itemAttributes2.getIntelligence();
+        HeroAttribute expectedAttr = new HeroAttribute(expectedStr, expectedDex, expectedInt);
+
+        assertEquals(expectedAttr, totalAttr);
+    }
+
+    @Test
+    void damage_shouldCalculateCorrectly_weaponless() {
+        //using the class-based damaging attribute
+        int damagingAttribute = startAttributes.getDexterity();
+
+        double expectedDmg = calculateDamage(weaponlessDamage, damagingAttribute);
         double actualDmg = hero.damage();
 
         assertEquals(expectedDmg, actualDmg, delta);
     }
 
     @Test
-    void damage_withWeapon() {
-        int heroLevel = hero.getLevel();
-        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, heroLevel);
+    void damage_shouldCalculateCorrectly_withWeapon() {
+        //using the class-based damaging attribute
+        int damagingAttribute = startAttributes.getDexterity();
+        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, startLevel);
 
         try {
             hero.equip(newWeapon);
         } catch (Exception ignored) {
         }
-
-        int damagingAttribute = hero.getLevelAttributesTotal().getDexterity();
-        double expectedDmg = weaponDamage * (1 + damagingAttribute / 100.0);
         double actualDmg = hero.damage();
+        double expectedDmg = calculateDamage(weaponDamage, damagingAttribute);
 
         assertEquals(expectedDmg, actualDmg, delta);
     }
 
     @Test
-    void damage_withWeaponReplaced() {
-        int heroLevel = hero.getLevel();
-        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, heroLevel);
+    void damage_shouldCalculateCorrectly_withWeaponReplaced() {
+        //using the class-based damaging attribute
+        int damagingAttribute = startAttributes.getDexterity();
+        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, startLevel);
         int weaponDamage2 = weaponDamage + 1;
-        Weapon newWeapon2 = new Weapon("Weapon2", validWeaponType, weaponDamage2, heroLevel);
+        Weapon newWeapon2 = new Weapon("Weapon2", validWeaponType, weaponDamage2, startLevel);
 
         try {
             hero.equip(newWeapon);
             hero.equip(newWeapon2);
         } catch (Exception ignored) {
         }
-
-        int damagingAttribute = hero.getLevelAttributesTotal().getDexterity();
-        double expectedDmg = weaponDamage2 * (1 + damagingAttribute / 100.0);
         double actualDmg = hero.damage();
+        double expectedDmg = calculateDamage(weaponDamage2, damagingAttribute);
+
         assertEquals(expectedDmg, actualDmg, delta);
     }
 
     @Test
-    void damage_withWeaponAndArmor() {
-        int heroLevel = hero.getLevel();
-        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, heroLevel);
-        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, heroLevel);
+    void damage_shouldCalculateCorrectly_withWeaponAndArmor() {
+        //using the class-based damaging attribute
+        int damagingAttribute = startAttributes.getDexterity();
+        damagingAttribute += itemAttributes.getDexterity();
+        Weapon newWeapon = new Weapon("Weapon", validWeaponType, weaponDamage, startLevel);
+        Armor newArmor = new Armor("Item", bodyArmorSlot, validArmorType, itemAttributes, startLevel);
 
         try {
             hero.equip(newWeapon);
             hero.equip(newArmor);
         } catch (Exception ignored) {
         }
-
-        int damagingAttribute = hero.getLevelAttributesTotal().getDexterity();
-        damagingAttribute += itemAttributes.getDexterity();
-        double expectedDmg = weaponDamage * (1 + damagingAttribute / 100.0);
         double actualDmg = hero.damage();
+        double expectedDmg = calculateDamage(weaponDamage, damagingAttribute);
+
         assertEquals(expectedDmg, actualDmg, delta);
     }
 
     @Test
-    void display() {
-        HeroAttribute total = hero.totalAttributes();
+    void display_should_returnExpectedString() {
+        //using the class-based damaging attribute
+        double damage = calculateDamage(weaponlessDamage, startAttributes.getDexterity());
+        String heroClass = "ranger";
 
         String expectedStr = "Name: " + heroName + "\r\n" +
-                "Class: " + hero.getHeroClass() + "\r\n" +
+                "Class: " + heroClass + "\r\n" +
                 "Level: " + startLevel + "\r\n" +
-                "Total strength: " + total.getStrength() + "\r\n" +
-                "Total dexterity: " + total.getDexterity() + "\r\n" +
-                "Total intelligence: " + total.getIntelligence() + "\r\n" +
-                "Damage: " + hero.damage() + "\r\n";
+                "Total strength: " + startAttributes.getStrength() + "\r\n" +
+                "Total dexterity: " + startAttributes.getDexterity() + "\r\n" +
+                "Total intelligence: " + startAttributes.getIntelligence() + "\r\n" +
+                "Damage: " + damage + "\r\n";
+
         String actualStr = hero.display();
+
         assertEquals(expectedStr, actualStr);
+    }
+
+    double calculateDamage(int weaponDamage, int damagingAttribute) {
+        return weaponDamage * (1 + damagingAttribute / 100.0);
     }
 }
